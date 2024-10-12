@@ -31,6 +31,10 @@ import {
   resetAppointmentCounts,
   deleteOldNotifications,
 } from "./routes/formNotifications.js";
+import pool from "./utils/db.js";
+const app = express();
+const PORT = process.env.PORT || 3001;
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -67,6 +71,18 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+// Health check route
+app.get("/health", async (req, res) => {
+  try {
+    await pool.query("SELECT NOW()"); // Simple query to check the connection
+    res.status(200).json({ message: "Database is connected" });
+  } catch (error) {
+    console.error("Database connection error:", error);
+    res.status(500).json({ message: "Database connection failed" });
+  }
+});
+
+// Don't forget to include this route in your main app file
 
 setInterval(resetAppointmentCounts, 12 * 60 * 60 * 1000); // 12 hours
 setInterval(deleteOldNotifications, 60 * 60 * 1000); // Every hour
