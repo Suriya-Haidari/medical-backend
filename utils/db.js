@@ -39,7 +39,6 @@ pool
   })
   .catch((err) => console.error("Connection error", err.stack))
   .finally(() => {
-    // Do not end the pool here if you want to keep it open for future queries
     // pool.end();
   });
 
