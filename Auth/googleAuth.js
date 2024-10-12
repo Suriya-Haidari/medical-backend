@@ -10,7 +10,7 @@ passport.use(
     {
       clientID: process.env.ID,
       clientSecret: process.env.SECRET,
-      callbackURL: "http://localhost:3001/auth/google/callback",
+      callbackURL: "https://medical-backend-project.onrender.com/auth/google/callback",
       passReqToCallback: true, // Allows passing the req object to the callback
     },
     async (req, accessToken, refreshToken, profile, done) => {
