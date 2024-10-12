@@ -23,7 +23,7 @@ env.config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: true, // Use this option in development; for production, set it up correctly with certificates.
+    rejectUnauthorized: false,
   },
 });
 
