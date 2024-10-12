@@ -1,20 +1,11 @@
 import express from "express";
-import pkg from "pg";
 import bcrypt from "bcrypt";
-const { Pool } = pkg;
 import env from "dotenv";
 import jwt from "jsonwebtoken";
-
+import pool from '../utils/db.js
 env.config();
 const router = express.Router();
 
-const pool = new Pool({
-  user: process.env.DATABASE_USER,
-  host: process.env.DATABASE_HOST,
-  database: process.env.DATABASE_NAME,
-  password: process.env.DATABASE_PASSWORD,
-  port: process.env.DATABASE_PORT,
-});
 
 // JWT Authentication Middleware
 const authenticateJWt2 = (req, res, next) => {
