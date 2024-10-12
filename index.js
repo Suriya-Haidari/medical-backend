@@ -1,3 +1,4 @@
+
 import bodyParser from "body-parser";
 import cors from "cors";
 import env from "dotenv";
@@ -32,9 +33,6 @@ import {
   deleteOldNotifications,
 } from "./routes/formNotifications.js";
 import pool from "./utils/db.js";
-const app = express();
-const PORT = process.env.PORT || 3001;
-
 
 const app = express();
 const PORT = process.env.PORT || 3001;
