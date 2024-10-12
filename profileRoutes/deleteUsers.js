@@ -7,7 +7,7 @@ import env from "dotenv";
 const router = express.Router();
 router.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://suriya-haidari.github.io",
     credentials: true, // Allow cookies and credentials to be sent
     allowedHeaders: ["Authorization", "Content-Type"],
   })

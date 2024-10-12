@@ -10,7 +10,7 @@ passport.use(
     {
       clientID: process.env.ID,
       clientSecret: process.env.SECRET,
-      callbackURL: "http://localhost:3001/auth/google/callback", // Use 'callbackURL' not 'redirectUri'
+      callbackURL: "http://localhost:3001/auth/google/callback",
       passReqToCallback: true, // Allows passing the req object to the callback
     },
     async (req, accessToken, refreshToken, profile, done) => {
@@ -122,7 +122,9 @@ export const googleAuthRoutes = (app) => {
       });
 
       // Send the token as part of the response
-      res.redirect(`http://localhost:3000/emergency?token=${token}`);
+      res.redirect(
+        `https://suriya-haidari.github.io/medical-frontend/emergency?token=${token}`
+      );
     }
   );
 
