@@ -210,8 +210,8 @@ app.use("/api/formNotifications", deleteNotificationRoutes);
 
 // CORS configuration
 const corsOptions = {
-  origin: "http://localhost:3000", // Frontend origin
-  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  origin: "https://suriya-haidari.github.io",
+methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
   credentials: true, // Allow cookies or authentication headers
 };
 app.use(cors(corsOptions));
