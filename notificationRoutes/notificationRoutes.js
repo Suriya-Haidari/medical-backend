@@ -115,7 +115,6 @@ env.config();
 
 const app = express(); // Ensure you define app before using it
 app.use(express.json()); // Middleware to parse JSON bodies
-app.use(cors(corsOptions)); // Use CORS middleware
 
 // CORS configuration
 const corsOptions = {
@@ -123,6 +122,8 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true, // Allow cookies or authentication headers
 };
+app.use(cors(corsOptions)); // Use CORS middleware
+
 
 const router = express.Router();
 
