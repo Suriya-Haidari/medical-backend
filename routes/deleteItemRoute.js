@@ -3,7 +3,16 @@ import cors from "cors";
 import env from "dotenv";
 import pool from "../utils/db.js";
 env.config();
-import getTableName from "../utils/getTableName.js";
+const getTableName = (option) => {
+  const tableMap = {
+    doctors: "doctorsposts",
+    hospital: "hospitalposts",
+    sick: "sickpeopleposts",
+  };
+  const tableName = tableMap[option];
+  if (!tableName) throw new Error("Invalid option");
+  return tableName;
+};
 
 const router = express.Router();
 
@@ -32,21 +41,3 @@ router.delete("/:option/:id", async (req, res) => {
 });
 
 export default router;
-
-// Delete item
-// app.delete("/api/items/:option/:id", async (req, res) => {
-//   const { id, option } = req.params;
-//   try {
-//     const tableName = getTableName(option);
-//     const result = await pool.query(
-//       `DELETE FROM ${tableName} WHERE id = $1 RETURNING *`,
-//       [id]
-//     );
-
-//     if (!result.rowCount)
-//       return res.status(404).json({ message: "Item not found" });
-//     res.status(204).send();
-//   } catch (error) {
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
