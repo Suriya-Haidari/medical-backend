@@ -6,19 +6,21 @@ env.config();
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const MANAGER_EMAIL = process.env.MANAGER_EMAIL;
+const MANAGER_PASSWORD = process.env.MANAGER_PASSWORD;
 
 // Initialize manager user
 export const initializeManager = async () => {
   try {
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [
-      "manager@gmail",
+      MANAGER_EMAIL,
     ]);
 
     if (result.rows.length === 0) {
-      const hashedPassword = await bcrypt.hash("manager", 10);
+      const hashedPassword = await bcrypt.hash(MANAGER_PASSWORD, 10);
       await pool.query(
         `INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3)`,
-        ["manager@gmail", hashedPassword, "manager"]
+        [MANAGER_EMAIL, hashedPassword, MANAGER_PASSWORD]
       );
       console.log("Manager user created.");
     } else {
