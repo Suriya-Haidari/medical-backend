@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import jwt from "jsonwebtoken";
-import { sendNotificationToAll } from "../wsServer.js"; // WebSocket function
+// import { sendNotificationToAll } from "../wsServer.js"; // WebSocket function
 import env from "dotenv";
 import pool from "../utils/db.js";
 const router = express.Router();
@@ -71,7 +71,7 @@ router.post(
         notification.message,
       ]);
 
-      sendNotificationToAll(notification);
+      // sendNotificationToAll(notification);
       res.status(201).json(result.rows[0]);
     } catch (error) {
       console.error("Error while processing the upload:", error);
