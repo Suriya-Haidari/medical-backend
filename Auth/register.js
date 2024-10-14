@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../utils/db.js";
 import sendMail from "../notification.js";
+import cors from "cors";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -13,6 +14,12 @@ const generateToken = (userId, role) => {
     expiresIn: "1h",
   });
 };
+const corsOptions = {
+  origin: "http://localhost:3000", // Frontend origin
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  credentials: true, // Allow cookies or authentication headers
+};
+app.use(cors(corsOptions));
 
 // Register route
 router.post("/register", async (req, res) => {
