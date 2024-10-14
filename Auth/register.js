@@ -19,7 +19,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
   credentials: true, // Allow cookies or authentication headers
 };
-app.use(cors(corsOptions));
+router.use(cors(corsOptions));
 
 // Register route
 router.post("/register", async (req, res) => {
