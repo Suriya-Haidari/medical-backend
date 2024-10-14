@@ -67,34 +67,3 @@ router.get("/api/user/role", authenticateJWT, async (req, res) => {
 });
 
 export default router; // Export the router
-
-// app.get("/api/user/role", authenticateJWT, async (req, res) => {
-//   try {
-//     const userId = req.user.id; // Always use `id` from `req.user`, set by the middleware
-
-//     if (!userId) {
-//       return res.status(403).json({ message: "Forbidden: No user ID found" });
-//     }
-
-//     const result = await pool.query("SELECT * FROM users WHERE id = $1", [
-//       userId,
-//     ]);
-
-//     if (!result.rows.length) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     const user = result.rows[0];
-//     res.status(200).json({
-//       id: user.id,
-//       email: user.email,
-//       created_at: user.created_at,
-//       role: user.role,
-//       full_Name: user.full_name,
-//       token: user.session_id, // Assuming session_id is being used as the token
-//     });
-//   } catch (error) {
-//     console.error("Error fetching user role:", error.message);
-//     res.status(500).json({ message: "Failed to fetch user role" });
-//   }
-// });
