@@ -1,6 +1,6 @@
 import express from "express";
 import pool from "../utils/db.js";
-import { handleNewEmail } from "../wsServer.js";
+import { handleNewEmail } from "../index.js";
 import sendMail from "../notifications.js";
 
 const router = express.Router();
