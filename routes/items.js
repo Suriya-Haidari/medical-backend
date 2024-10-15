@@ -2,6 +2,16 @@ import express from "express";
 import env from "dotenv";
 import pool from "../utils/db.js";
 const router = express.Router();
+import cors from "cors";
+
+
+// CORS configuration
+const corsOptions = {
+  origin: "https://suriya-haidari.github.io",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true, // Allow cookies or authentication headers
+};
+router.use(cors(corsOptions));
 
 env.config();
 
