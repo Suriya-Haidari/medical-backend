@@ -14,12 +14,13 @@ const generateToken = (userId, role) => {
     expiresIn: "1h",
   });
 };
+// CORS configuration
 const corsOptions = {
-  origin: "http://localhost:3000", // Frontend origin
+  origin: "https://medical-backend-project.onrender.com", // Frontend origin
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
   credentials: true, // Allow cookies or authentication headers
 };
-router.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Register route
 router.post("/register", async (req, res) => {
