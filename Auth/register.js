@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../utils/db.js";
-import sendMail from "../notification.js";
+// import sendMail from "../notification.js";
 import cors from "cors";
 
 const router = express.Router();
@@ -79,7 +79,7 @@ router.post("/register", async (req, res) => {
     ]);
 
     // Send registration email notification to the registered email
-    await sendMail(fullName, email);
+    // await sendMail(fullName, email);
 
     // Return response with userId and token
     res.status(201).json({
