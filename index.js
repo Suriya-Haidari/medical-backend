@@ -84,6 +84,17 @@ const sendNotificationToAll = (notification) => {
     }
   });
 };
+// New function to handle a new email and notify clients
+const handleNewEmail = (newNotification) => {
+  // Construct the notification message from the newNotification object
+  const notificationMessage = {
+    message: `New appointment added: ${newNotification.appointment_count}/20 (${newNotification.message})`,
+    id: `${newNotification.id}`,
+  };
+
+  // Send notification to all clients
+  sendNotificationToAll(notificationMessage);
+};
 
 // Middleware setup
 app.use(cookieParser());
