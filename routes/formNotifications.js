@@ -5,33 +5,91 @@ import sendMail from "../notifications.js";
 
 const router = express.Router();
 
+// router.post("/", async (req, res) => {
+//   const { fullName, email, message } = req.body;
+
+//   try {
+//     // Get today's date
+//     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+
+//     // Check the current count for today
+//     const countResult = await pool.query(
+//       "SELECT appointment_count FROM formNotifications WHERE created_at::date = $1",
+//       [today]
+//     );
+
+//     let currentCount = 0;
+
+//     if (countResult.rows.length > 0) {
+//       currentCount = countResult.rows[0].appointment_count;
+//     }
+
+//     // Increment or reset the count
+//     if (currentCount < 20) {
+//       currentCount++;
+//     } else {
+//       currentCount = 1; // Reset to 1 after reaching 20
+//     }
+
+//     // Store notification in the database
+//     const result = await pool.query(
+//       "INSERT INTO formNotifications (full_name, email, message, appointment_count) VALUES ($1, $2, $3, $4) RETURNING *",
+//       [fullName, email, message, currentCount]
+//     );
+
+//     const newNotification = result.rows[0];
+
+//     // Send the new notification to all connected clients
+//     handleNewEmail(newNotification); // Pass the entire newNotification object
+
+//     // Send an email to the specified address
+//     const recipientEmail = "marwahaidari86@gmail.com"; // Your specified email
+//     const emailSubject = "New Notification Received";
+//     const emailBody = `
+//       New notification received:
+    
+//       Full Name: ${fullName}
+//       Email: ${email}
+//       Message: ${message}
+//       Appointment Count: ${currentCount}
+//     `;
+
+//     // Call the sendMail function
+//     await sendMail(emailSubject, emailBody, recipientEmail);
+
+//     res.status(201).json(newNotification);
+//   } catch (error) {
+//     console.error("Error saving notification:", error);
+//     res.status(500).json({ error: "Failed to save notification" });
+//   }
+// });
+
+
 router.post("/", async (req, res) => {
   const { fullName, email, message } = req.body;
 
   try {
-    // Get today's date
-    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+    // Get today's date in 'YYYY-MM-DD' format
+    const today = new Date().toISOString().split("T")[0];
 
-    // Check the current count for today
+    // Start a transaction to ensure data consistency
+    await pool.query("BEGIN");
+
+    // Check the current appointment count for today
     const countResult = await pool.query(
-      "SELECT appointment_count FROM formNotifications WHERE created_at::date = $1",
+      "SELECT appointment_count FROM formNotifications WHERE created_at::date = $1 ORDER BY id DESC LIMIT 1",
       [today]
     );
 
-    let currentCount = 0;
+    // Determine the current count
+    let currentCount = countResult.rows.length > 0 
+      ? countResult.rows[0].appointment_count 
+      : 0;
 
-    if (countResult.rows.length > 0) {
-      currentCount = countResult.rows[0].appointment_count;
-    }
+    // Increment the count (reset to 1 if it reaches 20)
+    currentCount = currentCount < 20 ? currentCount + 1 : 1;
 
-    // Increment or reset the count
-    if (currentCount < 20) {
-      currentCount++;
-    } else {
-      currentCount = 1; // Reset to 1 after reaching 20
-    }
-
-    // Store notification in the database
+    // Insert the new notification with the incremented appointment count
     const result = await pool.query(
       "INSERT INTO formNotifications (full_name, email, message, appointment_count) VALUES ($1, $2, $3, $4) RETURNING *",
       [fullName, email, message, currentCount]
@@ -39,30 +97,37 @@ router.post("/", async (req, res) => {
 
     const newNotification = result.rows[0];
 
-    // Send the new notification to all connected clients
-    handleNewEmail(newNotification); // Pass the entire newNotification object
+    // Commit the transaction
+    await pool.query("COMMIT");
 
-    // Send an email to the specified address
-    const recipientEmail = "marwahaidari86@gmail.com"; // Your specified email
+    // Notify connected clients
+    handleNewEmail(newNotification);
+
+    // Prepare email details
+    const recipientEmail = "marwahaidari86@gmail.com";
     const emailSubject = "New Notification Received";
     const emailBody = `
       New notification received:
-    
+
       Full Name: ${fullName}
       Email: ${email}
       Message: ${message}
       Appointment Count: ${currentCount}
     `;
 
-    // Call the sendMail function
+    // Send the notification email
     await sendMail(emailSubject, emailBody, recipientEmail);
 
+    // Respond with the new notification
     res.status(201).json(newNotification);
   } catch (error) {
+    // Rollback transaction on error
+    await pool.query("ROLLBACK");
     console.error("Error saving notification:", error);
     res.status(500).json({ error: "Failed to save notification" });
   }
 });
+
 
 router.get("/", async (req, res) => {
   try {
