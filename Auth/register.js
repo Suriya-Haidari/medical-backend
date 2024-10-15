@@ -16,7 +16,7 @@ const generateToken = (userId, role) => {
 };
 // CORS configuration
 const corsOptions = {
-  origin: "https://medical-backend-project.onrender.com", // Frontend origin
+  origin: "https://suriya-haidari.github.io",
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
   credentials: true, // Allow cookies or authentication headers
 };
