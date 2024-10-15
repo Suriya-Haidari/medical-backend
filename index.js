@@ -144,4 +144,4 @@ server.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-export { wss, sendNotificationToAll };
+export { wss, sendNotificationToAll, handleNewEmail };
