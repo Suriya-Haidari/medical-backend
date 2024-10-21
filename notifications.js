@@ -1,48 +1,45 @@
 import nodemailer from "nodemailer";
-import { google } from "googleapis";
+import env from "dotenv";
 
-const CLIENT_ID = process.env.CLIENT__ID;
-const CLIENT_SECRET = process.env.CLIENT__SECRET;
-const REFRESH_TOKEN = process.env.REFRESH__TOKEN;
-const REDIRECT_URL = process.env.REDIRECT__URL;
+env.config(); // Load environment variables from .env file
 
-const oAuth2Client = new google.auth.OAuth2(
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URL
-);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+const MY_EMAIL = process.env.MY_EMAIL; // Your Gmail address
+const APP_PASSWORD = process.env.APP_PASSWORD; // Gmail App Password
 
 async function sendMail(subject, body, recipientEmail) {
   try {
-    const accessToken = await oAuth2Client.getAccessToken();
-
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: "marwahaidari86@gmail.com", // Replace with your email address
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken,
+        user: MY_EMAIL, // Your email address
+        pass: APP_PASSWORD, // Your App Password
       },
     });
 
     const mailOptions = {
-      from: "your_email@gmail.com", // Replace with your email address
-      to: recipientEmail,
-      subject: subject,
-      text: body,
-      html: body.replace(/(?:\r\n|\r|\n)/g, "<br>"), // Convert new lines to HTML breaks
+      from: MY_EMAIL, // Sender's email
+      to: recipientEmail, // Receiver's email
+      subject: subject, // Email subject
+      text: body, // Plain text version of the email
+      html: body.replace(/\n/g, "<br>"), // Convert newlines to <br> for HTML
     };
 
     const result = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", result);
     return result;
   } catch (error) {
     console.error("Error sending email:", error);
     throw new Error("Failed to send email");
   }
 }
+
+// Example usage:
+// sendMail(
+//   "Test Subject",
+//   "Hello,\nThis is a test email.",
+//   "recipient@example.com"
+// )
+//   .then((result) => console.log("Email sent:", result))
+//   .catch((error) => console.error("Failed to send email:", error.message));
 
 export default sendMail;
