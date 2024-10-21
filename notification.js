@@ -34,8 +34,9 @@ async function sendMail(fullName, email) {
     throw error;
   }
 }
-sendMail("John Doe", "john.doe@example.com")
+sendMail()
   .then((result) => console.log("Email sent:", result))
   .catch((error) => console.error("Failed to send email:", error.message));
 
 export default sendMail;
+
