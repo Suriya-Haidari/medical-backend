@@ -14,9 +14,10 @@ env.config();
 
 router.use(
   cors({
-    origin: "http://localhost:3000",
-    credentials: true, // Allow cookies and credentials to be sent
-    allowedHeaders: ["Authorization", "Content-Type"],
+   origin: "https://suriya-haidari.github.io",
+   credentials: true, // Allow cookies and credentials to be sent
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+   allowedHeaders: ["Authorization", "Content-Type"],
   })
 );
 
