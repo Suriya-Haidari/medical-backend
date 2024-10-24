@@ -86,7 +86,6 @@
 // });
 
 // export default router;
-
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -96,6 +95,7 @@ import cors from "cors";
 
 env.config();
 
+const app = express();
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -106,10 +106,10 @@ const corsOptions = {
   credentials: true, // Allow cookies or authentication headers
 };
 
-// Middleware setup
-router.use(cors(corsOptions));
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+// Apply CORS middleware at the app level
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Function to generate JWT token
 const generateToken = (userId, role) =>
@@ -135,7 +135,6 @@ router.post("/signin", async (req, res) => {
     // If the user has signed up with Google, skip the password check
     if (user.password_hash === "google") {
       const token = generateToken(user.id, user.role);
-      // Optionally, you can update the session token in the database here
       return res.json({ token });
     }
 
@@ -156,9 +155,12 @@ router.post("/signin", async (req, res) => {
       token,
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error during sign-in:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-export default router;
+// Make sure to use the router
+app.use('/api', router);
+
+export default app;  // Export the Express app
