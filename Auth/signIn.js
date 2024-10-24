@@ -12,14 +12,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const app = express();
 env.config();
 
-router.use(
-  cors({
-   origin: "https://suriya-haidari.github.io",
-   credentials: true, // Allow cookies and credentials to be sent
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
-   allowedHeaders: ["Authorization", "Content-Type"],
-  })
-);
+const corsOptions = {
+  origin: "https://suriya-haidari.github.io",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
+  credentials: true, // Allow cookies or authentication headers
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
