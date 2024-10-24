@@ -8,16 +8,16 @@ import bodyParser from "body-parser";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
-
-const app = express();
-env.config();
-
 const corsOptions = {
   origin: "https://suriya-haidari.github.io",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
   credentials: true, // Allow cookies or authentication headers
 };
 app.use(cors(corsOptions));
+
+const app = express();
+env.config();
+
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
