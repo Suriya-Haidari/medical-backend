@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Function to generate JWT token
 const generateToken = (userId, role) => {
   return jwt.sign({ userId: parseInt(userId), role }, JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "7d",
   });
 };
 
