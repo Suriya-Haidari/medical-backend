@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Function to generate JWT token
 
 const generateToken = (userId, role) =>
-  jwt.sign({ userId: parseInt(userId), role }, JWT_SECRET, { expiresIn: "1m" });
+  jwt.sign({ userId: parseInt(userId), role }, JWT_SECRET, { expiresIn: "7d" });
 
 // Sign-in route
 router.post("/signin", async (req, res) => {
