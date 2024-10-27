@@ -1,7 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import db from "../utils/db.js";
-
+ 
 const router = express.Router();
 
 router.post("/logout", async (req, res) => {
