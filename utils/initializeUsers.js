@@ -20,7 +20,7 @@ export const initializeManager = async () => {
       const hashedPassword = await bcrypt.hash(MANAGER_PASSWORD, 10);
       await pool.query(
         `INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3)`,
-        [MANAGER_EMAIL, hashedPassword, MANAGER_PASSWORD]
+        [MANAGER_EMAIL, hashedPassword, "manager"]
       );
       console.log("Manager user created.");
     } else {
