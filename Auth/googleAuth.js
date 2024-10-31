@@ -75,19 +75,11 @@ passport.use(
           throw new Error("JWT_SECRET is not defined");
         }
 
-        // const token = jwt.sign(
-        //   { id: user.id, role: user.role },
-        //   process.env.JWT_SECRET,
-        //   {
-        //     expiresIn: "1d",
-        //   }
-        // );
-
         const token = jwt.sign(
-  { userId: user.id, role: user.role },  // Include 'userId' and 'role' to match regular user tokens
-  process.env.JWT_SECRET,
-  { expiresIn: "1d" }
-);
+       { userId: user.id, role: user.role },  // Include 'userId' and 'role' to match regular user tokens
+        process.env.JWT_SECRET,
+       { expiresIn: "1d" }
+       );
 
 
         // Send email only if it's a new user
