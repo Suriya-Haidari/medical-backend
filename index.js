@@ -127,9 +127,10 @@ app.use("/api/formNotifications", deleteNotificationRoutes);
 
 // CORS configuration
 const corsOptions = {
-  origin: "https://suriya-haidari.github.io",
+  // origin: "https://suriya-haidari.github.io",
+origin: "*",
 methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
-  credentials: true, // Allow cookies or authentication headers
+credentials: true, // Allow cookies or authentication headers
 };
 app.use(cors(corsOptions));
 
